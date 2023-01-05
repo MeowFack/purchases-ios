@@ -41,7 +41,7 @@ final class PostReceiptDataOperation: CacheableNetworkOperation {
     ) -> CacheableNetworkOperationFactory<PostReceiptDataOperation> {
         let cacheKey =
         """
-        \(configuration.appUserID)-\(postData.isRestore)-\(postData.receiptData.asFetchToken)
+        \(configuration.appUserID)-\(postData.isRestore)-\(postData.receiptData.hashString)
         -\(postData.productData?.cacheKey ?? "")
         -\(postData.presentedOfferingIdentifier ?? "")-\(postData.observerMode)
         -\(postData.subscriberAttributesByKey?.debugDescription ?? "")"
