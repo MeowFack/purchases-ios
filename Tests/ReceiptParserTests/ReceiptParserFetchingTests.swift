@@ -74,15 +74,16 @@ class ReceiptParserFetchingTests: XCTestCase {
 
         let receiptURL = try XCTUnwrap(self.mockBundle.appStoreReceiptURL)
         let data = try DefaultFileReader().contents(of: receiptURL)
+        let decodedData = try XCTUnwrap(
+            Data(base64Encoded: XCTUnwrap(String(data: data, encoding: .utf8)))
+        )
 
-        // TODO: this is base64... how is it encoded?
-        self.mockFileReader.mock(url: receiptURL, with: data)
+        self.mockFileReader.mock(url: receiptURL, with: decodedData)
 
         let receipt = try self.fetchAndParse()
-        // TODO: more assertions
-        expect(receipt.bundleId) == "com.revenuecat.StoreKitUnitTestsHostApp"
-        expect(receipt.applicationVersion) == "1"
-        expect(receipt.originalApplicationVersion).to(beNil())
+        expect(receipt.bundleId) == "com.revenuecat.sampleapp"
+        expect(receipt.applicationVersion) == "4"
+        expect(receipt.originalApplicationVersion) == "1.0"
         expect(receipt.opaqueValue).toNot(beNil())
         expect(receipt.sha1Hash).toNot(beNil())
     }
